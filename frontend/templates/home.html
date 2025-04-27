@@ -1,12 +1,55 @@
-{% extends "base.html" %}
-
-{% block title %}Главная страница{% endblock %}
-
-{% block content %}
-    <h1>Добро пожаловать в GlassWorks!</h1>
-    <p>Система управления производством стеклянных изделий</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GlassWorks - Клиенты</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Список клиентов</h1>
     
-    <div class="dashboard">
-        <!-- Здесь будет контент главной страницы -->
-    </div>
-{% endblock %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя клиента</th>
+                <th>Адрес</th>
+                <th>Телефон</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr>
+                <td>{{ customer.customer_id }}</td>
+                <td>{{ customer.customer_name }}</td>
+                <td>{{ customer.address }}</td>
+                <td>{{ customer.phone_number }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

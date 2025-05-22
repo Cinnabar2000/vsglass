@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if order %}Редактирование заказа #{{ order.order_id }}{% else %}Новый заказ{% endif %} | VSGlass
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{% if order %}Редактирование заказа #{{ order.order_id }}{% else %}Новый заказ{% endif %}</h1>
+    
+    <form method="post" action="{% if order %}/orders/{{ order.order_id }}/edit{% else %}/orders/new{% endif %}">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="order_date">Дата оформления:</label>
+                <input type="date" id="order_date" name="order_date" 
+                       value="{{ order.order_date if order else '' }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="due_date">Срок выполнения:</label>
+                <input type="date" id="due_date" name="due_date" 
+                       value="{{ order.due_date if order else '' }}" required>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="customer_id">ID клиента:</label>
+                <input type="number" id="customer_id" name="customer_id" 
+                       value="{{ order.customer_id if order else '' }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="total_amount">Сумма:</label>
+                <input type="number" step="0.01" id="total_amount" name="total_amount" 
+                       value="{{ order.total_amount if order else '' }}" required>
+            </div>
+        </div>
+        
+        <h2>Детали заказа</h2>
+        <div id="details-container">
+            {% for d in details %}
+            <div class="detail-item">
+                <div class="detail-header">
+                    <h3>Деталь #{{ loop.index }}</h3>
+                    <button type="button" class="btn-remove-detail" onclick="removeDetail(this)">Удалить</button>
+                </div>
+                
+                <div class="form-group">
+                    <label>Тип стекла:</label>
+                    <select name="glass_type_{{ d.detail_id }}" required>
+                        {% for gt in glass_types %}
+                        <option value="{{ gt.type_id }}" 
+                                {% if gt.type_id == d.glass_type_id %}selected{% endif %}>
+                            {{ gt.type_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Ширина:</label>
+                        <input type="number" step="0.01" name="width_{{ d.detail_id }}" 
+                               value="{{ d.width }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Высота:</label>
+                        <input type="number" step="0.01" name="height_{{ d.detail_id }}" 
+                               value="{{ d.height }}" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="is_completed_{{ d.detail_id }}" 
+                               {% if d.is_completed %}checked{% endif %}>
+                        Завершено
+                    </label>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="form-actions">
+            <button type="button" id="add-detail-btn" class="btn-add">+ Добавить деталь</button>
+            <div>
+                <button type="submit" class="btn-save">Сохранить</button>
+                <a href="/orders" class="btn-cancel">Отмена</a>
+            </div>
+        </div>
+    </form>
+    
+    {% if order %}
+    <form method="post" action="/orders/{{ order.order_id }}/delete" class="delete-form">
+        <button type="submit" class="btn-delete" onclick="return confirm('Удалить этот заказ?')">Удалить заказ</button>
+    </form>
+    {% endif %}
+</div>
+
+<script>
+    let detailCounter = {{ details|length if details else 0 }};
+    
+    document.getElementById('add-detail-btn').addEventListener('click', function() {
+        detailCounter++;
+        const container = document.getElementById('details-container');
+        const newDetail = document.createElement('div');
+        newDetail.className = 'detail-item';
+        newDetail.innerHTML = `
+            <div class="detail-header">
+                <h3>Деталь #${detailCounter}</h3>
+                <button type="button" class="btn-remove-detail" onclick="removeDetail(this)">Удалить</button>
+            </div>
+            
+            <div class="form-group">
+                <label>Тип стекла:</label>
+                <select name="glass_type_new_${detailCounter}" required>
+                    {% for gt in glass_types %}
+                    <option value="{{ gt.type_id }}">{{ gt.type_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ширина:</label>
+                    <input type="number" step="0.01" name="width_new_${detailCounter}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Высота:</label>
+                    <input type="number" step="0.01" name="height_new_${detailCounter}" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="is_completed_new_${detailCounter}">
+                    Завершено
+                </label>
+            </div>
+        `;
+        container.appendChild(newDetail);
+    });
+    
+    function removeDetail(button) {
+        if (document.querySelectorAll('.detail-item').length > 1) {
+            button.closest('.detail-item').remove();
+            // Перенумеруем оставшиеся детали
+            document.querySelectorAll('.detail-item').forEach((item, index) => {
+                item.querySelector('h3').textContent = `Деталь #${index + 1}`;
+            });
+            detailCounter = document.querySelectorAll('.detail-item').length;
+        } else {
+            alert('Заказ должен содержать хотя бы одну деталь');
+        }
+    }
+</script>
+{% endblock %}

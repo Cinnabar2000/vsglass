@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Остатки стекла | VSGlass{% endblock %}
+
+{% block content %}
+<div class="container inventory-container">
+    <div class="inventory-header">
+        <h1 class="inventory-title">Остатки стекла</h1>
+        <div class="inventory-actions">
+            <a href="#" class="btn btn-export">Экспорт в Excel</a>
+        </div>
+    </div>
+    
+    <!-- Фильтры -->
+    <div class="card filter-card">
+        <div class="card-header">
+            <h2>Фильтры</h2>
+        </div>
+        <div class="card-body">
+            <form method="get" action="/inventory" class="filter-form">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="glass_type">Тип стекла</label>
+                        <select id="glass_type" name="glass_type" class="form-control">
+                            <option value="">Все типы</option>
+                            {% for gt in glass_types %}
+                            <option value="{{ gt.type_id }}" {% if current_filters.glass_type == gt.type_id %}selected{% endif %}>
+                                {{ gt.type_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group col-md-2">
+                        <label for="min_width">Мин. ширина (м)</label>
+                        <input type="number" step="0.01" class="form-control" id="min_width" name="min_width" 
+                               value="{{ current_filters.min_width or '' }}">
+                    </div>
+                    
+                    <div class="form-group col-md-2">
+                        <label for="min_height">Мин. высота (м)</label>
+                        <input type="number" step="0.01" class="form-control" id="min_height" name="min_height" 
+                               value="{{ current_filters.min_height or '' }}">
+                    </div>
+                    
+                    <div class="form-group col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary mr-2">Применить</button>
+                        <a href="/inventory" class="btn btn-outline-secondary">Сбросить</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Таблица остатков -->
+    <div class="card table-card">
+        <div class="table-responsive">
+            <table class="table table-hover inventory-table">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th>Тип стекла</th>
+                        <th class="text-right">Ширина (м)</th>
+                        <th class="text-right">Высота (м)</th>
+                        <th class="text-right">Площадь (м²)</th>
+                        <th class="text-center">Дата поступления</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in remnants %}
+                    <tr class="remnant-row">
+                        <td class="text-center">{{ r.remnant_id }}</td>
+                        <td class="type-cell">{{ r.type_name }}</td>
+                        <td class="text-right">{{ "%.2f"|format(r.width) }}</td>
+                        <td class="text-right">{{ "%.2f"|format(r.height) }}</td>
+                        <td class="text-right">{{ "%.2f"|format(r.width * r.height) }}</td>
+                        <td class="text-center">{{ r.created_at.strftime('%d.%m.%Y') }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">Нет данных для отображения</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Пагинация -->
+    {% if total_pages > 1 %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if current_page > 1 %}
+            <li class="page-item">
+                <a class="page-link" 
+                   href="/inventory?page={{ current_page - 1 }}{% if current_filters.glass_type %}&glass_type={{ current_filters.glass_type }}{% endif %}{% if current_filters.min_width %}&min_width={{ current_filters.min_width }}{% endif %}{% if current_filters.min_height %}&min_height={{ current_filters.min_height }}{% endif %}" 
+                   aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+            
+            {% for p in range(1, total_pages + 1) %}
+            <li class="page-item {% if p == current_page %}active{% endif %}">
+                <a class="page-link" 
+                   href="/inventory?page={{ p }}{% if current_filters.glass_type %}&glass_type={{ current_filters.glass_type }}{% endif %}{% if current_filters.min_width %}&min_width={{ current_filters.min_width }}{% endif %}{% if current_filters.min_height %}&min_height={{ current_filters.min_height }}{% endif %}">
+                    {{ p }}
+                </a>
+            </li>
+            {% endfor %}
+            
+            {% if current_page < total_pages %}
+            <li class="page-item">
+                <a class="page-link" 
+                   href="/inventory?page={{ current_page + 1 }}{% if current_filters.glass_type %}&glass_type={{ current_filters.glass_type }}{% endif %}{% if current_filters.min_width %}&min_width={{ current_filters.min_width }}{% endif %}{% if current_filters.min_height %}&min_height={{ current_filters.min_height }}{% endif %}" 
+                   aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,96 +1,105 @@
 {% extends "base.html" %}
 
-{% block title %}Раскрой | VSGlass{% endblock %}
+{% block title %}Раскрой стекла | VSGlass{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="page-header">
-        <h1>Раскрой стекла</h1>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Раскрой стекла</h1>
     </div>
 
-    <div class="cutting-layout">
-        <!-- Левая панель -->
-        <div class="cutting-controls">
-            <div class="control-section">
-                <label for="glassTypeSelect" class="control-label">Тип стекла:</label>
-                <select id="glassTypeSelect" class="control-select">
-                    {% for gt in glass_types %}
-                        <option value="{{ gt.type_id }}">
-                            {{ gt.type_name }} ({{ gt.height }} м)
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <button id="calculateBtn" class="calculate-btn">
-                Рассчитать раскрой
-            </button>
-
-            <div class="details-summary">
-                <span>Всего деталей:</span>
-                <strong id="totalDetails">0</strong>
-            </div>
-
-            <div class="details-table-container">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Ширина</th>
-                            <th>Высота</th>
-                        </tr>
-                    </thead>
-                    <tbody id="detailsList">
-                        <!-- Детали появятся здесь -->
-                    </tbody>
-                </table>
-            </div>
-
-            <button id="confirmCuttingBtn" class="calculate-btn" style="background-color: #2196F3; display: none;">
-                Списать детали
-            </button>
-        </div>
-
-        <!-- Правая панель -->
-        <div class="cutting-results">
-            <div id="cuttingResults" class="results-placeholder">
-                <div class="placeholder-message">
-                    <i class="icon-info"></i>
-                    <p>Выберите тип стекла и нажмите "Рассчитать раскрой"</p>
+    <div class="row">
+        <!-- Левая панель - управление -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Параметры раскроя</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="glassTypeSelect" class="form-label">Тип стекла:</label>
+                        <select id="glassTypeSelect" class="form-select">
+                            {% for gt in glass_types %}
+                                <option value="{{ gt.type_id }}">
+                                    {{ gt.type_name }} ({{ gt.type_height }} м)
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <button id="calculateBtn" class="btn btn-primary w-100 mb-3">
+                        <i class="bi bi-calculator me-2"></i>Рассчитать раскрой
+                    </button>
+                    
+                    <button id="confirmCuttingBtn" class="btn btn-success w-100" style="display: none;">
+                        <i class="bi bi-check-circle me-2"></i>Подтвердить раскрой
+                    </button>
                 </div>
             </div>
-
-            <div id="cuttingDiagramContainer" class="diagrams-container">
-                <h3 class="diagrams-title">Планы раскроя</h3>
-                <div id="cuttingStats" class="stats-container"></div>
-                <div id="cuttingImagesRow" class="diagrams-grid">
-                    <!-- Схемы раскроя появятся здесь -->
+            
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Детали для раскроя</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Всего деталей:</span>
+                        <strong id="totalDetails">0</strong>
+                    </div>
+                    
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-sm table-hover">
+                            <thead class="table-light sticky-top">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Ширина (мм)</th>
+                                    <th>Высота (мм)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailsList">
+                                <!-- Детали будут здесь -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+        
+        <!-- Правая панель - результаты -->
+        <div class="col-md-8">
+            <div id="cuttingResults" class="card mb-4">
+                <div class="card-body text-center py-5">
+                    <i class="bi bi-info-circle fs-1 text-muted mb-3"></i>
+                    <p class="text-muted">Выберите тип стекла и нажмите "Рассчитать раскрой"</p>
+                </div>
+            </div>
+            
+            <div id="cuttingDiagramContainer" style="display: none;">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Статистика раскроя</h5>
+                    </div>
+                    <div class="card-body" id="cuttingStats">
+                        <!-- Статистика будет здесь -->
+                    </div>
+                </div>
+                
+                <h4 class="mb-3">Планы раскроя</h4>
+                <div id="cuttingImagesRow" class="row">
+                    <!-- Диаграммы раскроя будут здесь -->
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-
-<!-- Модальное окно для увеличенного изображения -->
-<div id="imageModal" class="modal">
-    <span class="modal-close">&times;</span>
-    <img class="modal-content" id="modalImage">
-    <div id="caption" class="modal-caption"></div>
 </div>
 
 <style>
-    /* Существующие стили остаются без изменений */
-    .stats-container {
-        background: #f8f9fa;
-        border-radius: 6px;
-        padding: 15px;
-        margin-bottom: 20px;
-    }
-    
     .stat-item {
         display: flex;
         justify-content: space-between;
         margin-bottom: 8px;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
     }
     
     .stat-label {
@@ -103,251 +112,27 @@
     }
     
     .efficiency-high {
-        color: #4CAF50;
+        color: #28a745;
     }
     
     .efficiency-medium {
-        color: #FFC107;
+        color: #ffc107;
     }
     
     .efficiency-low {
-        color: #F44336;
+        color: #dc3545;
+    }
+    
+    .diagram-card {
+        transition: transform 0.2s;
+    }
+    
+    .diagram-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .card-header {
+        font-weight: 600;
     }
 </style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const glassTypeSelect = document.getElementById('glassTypeSelect');
-    const calculateBtn = document.getElementById('calculateBtn');
-    const confirmCuttingBtn = document.getElementById('confirmCuttingBtn');
-    const detailsList = document.getElementById('detailsList');
-    const totalDetailsSpan = document.getElementById('totalDetails');
-    const cuttingResults = document.getElementById('cuttingResults');
-    const cuttingDiagramContainer = document.getElementById('cuttingDiagramContainer');
-    const cuttingImagesRow = document.getElementById('cuttingImagesRow');
-    const cuttingStats = document.getElementById('cuttingStats');
-
-    calculateBtn.addEventListener('click', function () {
-        const glassTypeId = glassTypeSelect.value;
-        calculateBtn.disabled = true;
-        calculateBtn.textContent = 'Расчет...';
-
-        fetch(`/api/cutting/calculate?glass_type_id=${glassTypeId}`)
-            .then(response => {
-                if (!response.ok) throw new Error('Ошибка расчета раскроя');
-                return response.json();
-            })
-            .then(data => {
-                // Отображаем детали
-                detailsList.innerHTML = '';
-                totalDetailsSpan.textContent = data.details.length;
-
-                data.details.forEach(detail => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${detail.detail_id}</td>
-                        <td>${detail.width} мм</td>
-                        <td>${detail.height} мм</td>
-                    `;
-                    detailsList.appendChild(row);
-                });
-
-                // Отображаем статистику
-                cuttingStats.innerHTML = `
-                    <div class="stat-item">
-                        <span class="stat-label">Использование материала:</span>
-                        <span class="stat-value ${getEfficiencyClass(data.stats.utilization)}">
-                            ${data.stats.utilization}%
-                        </span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Деталей размещено:</span>
-                        <span class="stat-value">
-                            ${data.stats.placed_details} из ${data.stats.total_details}
-                        </span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Использовано листов:</span>
-                        <span class="stat-value">${data.stats.sheets_used}</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">На остатках:</span>
-                        <span class="stat-value">${data.stats.placed_on_remnants}</span>
-                    </div>
-                `;
-
-                // Отображаем схемы раскроя
-                cuttingResults.innerHTML = '';
-                cuttingDiagramContainer.style.display = 'block';
-                cuttingImagesRow.innerHTML = '';
-
-                data.cutting_plans.forEach((plan, index) => {
-                    const svgCode = generateCuttingDiagram(plan);
-                    const card = document.createElement('div');
-                    card.className = 'diagram-card';
-                    card.innerHTML = `
-                        <div class="diagram-header">
-                            ${plan.is_remnant ? 'Остаток' : 'Лист'} ${index + 1}
-                            ${plan.is_remnant ? `(ID: ${plan.remnant_id})` : ''}
-                        </div>
-                        <div class="diagram-image">
-                            ${svgCode}
-                        </div>
-                    `;
-                    cuttingImagesRow.appendChild(card);
-                });
-
-                // Показываем кнопку подтверждения
-                confirmCuttingBtn.style.display = 'block';
-            })
-            .catch(error => {
-                console.error("Ошибка:", error);
-                cuttingResults.innerHTML = `
-                    <div class="error-message">
-                        <i class="icon-error"></i>
-                        <p>${error.message}</p>
-                    </div>
-                `;
-                cuttingDiagramContainer.style.display = 'none';
-            })
-            .finally(() => {
-                calculateBtn.disabled = false;
-                calculateBtn.textContent = 'Рассчитать раскрой';
-            });
-    });
-
-    // Подтверждение раскроя
-    confirmCuttingBtn.addEventListener('click', function() {
-        const glassTypeId = glassTypeSelect.value;
-        confirmCuttingBtn.disabled = true;
-        confirmCuttingBtn.textContent = 'Списание...';
-
-        fetch('/api/cutting/confirm', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ glass_type_id: glassTypeId })
-        })
-        .then(response => {
-            if (!response.ok) throw new Error('Ошибка списания деталей');
-            return response.json();
-        })
-        .then(data => {
-            alert('Детали успешно списаны!');
-            confirmCuttingBtn.style.display = 'none';
-        })
-        .catch(error => {
-            console.error("Ошибка:", error);
-            alert(error.message);
-        })
-        .finally(() => {
-            confirmCuttingBtn.disabled = false;
-            confirmCuttingBtn.textContent = 'Списать детали';
-        });
-    });
-
-    // Генерация SVG диаграммы раскроя
-    function generateCuttingDiagram(plan) {
-        const width = plan.sheet_width || plan.remnant_width;
-        const height = plan.sheet_height || plan.remnant_height;
-        const scale = 300 / Math.max(width, height);
-        
-        let svg = `
-            <svg width="100%" viewBox="0 0 ${width} ${height}" 
-                 style="max-height: 500px; border: 1px solid #eee; border-radius: 4px;">
-                <rect x="0" y="0" width="${width}" height="${height}" 
-                      fill="#f5f5f5" stroke="#ddd"/>
-        `;
-        
-        // Отрисовка деталей
-        plan.details.forEach(detail => {
-            const fill = detail.rotated ? '#BBDEFB' : '#90CAF9';
-            svg += `
-                <rect x="${detail.position_x}" y="${detail.position_y}" 
-                      width="${detail.width}" height="${detail.height}"
-                      fill="${fill}" stroke="#2196F3" stroke-width="1"
-                      rx="2" ry="2">
-                    <title>Деталь ${detail.detail_id} (${detail.width}x${detail.height} мм)
-${detail.rotated ? 'Повернута на 90°' : ''}</title>
-                </rect>
-                <text x="${detail.position_x + detail.width/2}" 
-                      y="${detail.position_y + detail.height/2}" 
-                      text-anchor="middle" dominant-baseline="middle"
-                      font-size="${Math.min(detail.width, detail.height) * 0.2}" 
-                      fill="#0d47a1">
-                    ${detail.detail_id}
-                </text>
-            `;
-        });
-        
-        // Отрисовка разрезов
-        if (plan.cuts) {
-            plan.cuts.forEach(cut => {
-                if (cut[0] === 'horizontal') {
-                    svg += `
-                        <line x1="0" y1="${cut[1]}" x2="${width}" y2="${cut[1]}" 
-                              stroke="#e91e63" stroke-width="2" stroke-dasharray="5,5"/>
-                    `;
-                } else {
-                    svg += `
-                        <line x1="${cut[1]}" y1="0" x2="${cut[1]}" y2="${height}" 
-                              stroke="#e91e63" stroke-width="2" stroke-dasharray="5,5"/>
-                    `;
-                }
-            });
-        }
-        
-        svg += `</svg>`;
-        return svg;
-    }
-
-    function getEfficiencyClass(percent) {
-        if (percent >= 80) return 'efficiency-high';
-        if (percent >= 60) return 'efficiency-medium';
-        return 'efficiency-low';
-    }
-
-    // Функции для работы модального окна
-    function openModal(element) {
-        const modal = document.getElementById('imageModal');
-        const modalImg = document.getElementById("modalImage");
-        const captionText = document.getElementById("caption");
-        
-        // Для SVG используем outerHTML, для изображений - src
-        if (element.tagName === 'svg') {
-            const svgData = new XMLSerializer().serializeToString(element);
-            const svgUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgData);
-            modalImg.src = svgUrl;
-            captionText.innerHTML = element.parentElement.parentElement.querySelector('.diagram-header').textContent;
-        } else {
-            modalImg.src = element.src;
-            captionText.innerHTML = element.alt;
-        }
-        
-        modal.style.display = "block";
-        
-        // Закрытие при клике вне изображения
-        modal.onclick = function(event) {
-            if (event.target === modal || event.target.className === "modal-close") {
-                modal.style.display = "none";
-            }
-        };
-        
-        // Закрытие по ESC
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                modal.style.display = "none";
-            }
-        });
-    }
-});
-
-// Делегирование событий для SVG
-document.addEventListener('click', function(e) {
-    if (e.target.closest('.diagram-image svg')) {
-        openModal(e.target.closest('svg'));
-    }
-});
-</script>
 {% endblock %}

@@ -1,128 +1,42 @@
+<!-- D:\vsglass\frontend\templates\base.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}GlassWorks{% endblock %}</title>
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --light-color: #ecf0f1;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        .navbar {
-            background-color: var(--primary-color);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .nav-brand img {
-            height: 30px;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-        
-        .nav-link {
-            color: var(--light-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            padding: 0.5rem 0;
-            position: relative;
-        }
-        
-        .nav-link:hover {
-            color: var(--secondary-color);
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--secondary-color);
-            transition: width 0.3s;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
-        }
-        
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background-color: var(--secondary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-        
-        main {
-            padding: 2rem;
-        }
-    </style>
-    {% block styles %}{% endblock %}
+    <title>{% block title %}VSGlass{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
     <nav class="navbar">
-        <a href="/" class="nav-brand">
-            <img src="/static/logo.svg" alt="GlassWorks Logo">
-            GlassWorks
-        </a>
-        
-        <div class="nav-links">
-            <a href="/orders" class="nav-link">База заказов</a>
-            <a href="/cutting" class="nav-link">Раскрой</a>
-            <a href="/materials" class="nav-link">Материалы</a>
-        </div>
-        
-        <div class="user-profile">
-            <span>Иван Иванов</span>
-            <div class="user-avatar">ИИ</div>
+        <div class="navbar-container">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+            <!-- Логотип слева -->
+            <div class="navbar-brand">
+                <a href="/">
+                    <img src="/static/logo.svg" alt="VSGlass Logo" class="logo">
+                </a>
+            </div>
+            
+            <!-- Центральное меню -->
+            <div class="navbar-menu">
+                <a href="/orders" class="nav-link">Заказы</a>
+                <a href="/inventory" class="nav-link">Остатки</a>
+                <a href="/cutting" class="nav-link">Раскрой</a>
+                <a href="/customers" class="nav-link">Клиенты</a>
+            </div>
+            
+            <!-- Личный кабинет справа -->
+            <div class="navbar-profile">
+                <a href="/profile">
+                    <img src="/static/profile-icon.svg" alt="Profile" class="profile-icon">
+                </a>
+            </div>
         </div>
     </nav>
-    
+
     <main>
         {% block content %}{% endblock %}
     </main>
-
-    {% block scripts %}{% endblock %}
 </body>
 </html>

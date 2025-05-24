@@ -1,55 +1,380 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>GlassWorks - Клиенты</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            color: #2c3e50;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-    </style>
-</head>
-<body>
-    <h1>Список клиентов</h1>
+{% extends "base.html" %}
+{% block title %}Главная | VSGlass{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Быстрорез - Интеллектуальная система раскроя стекла</h1>
+            <p class="hero-subtitle">Оптимизация производственных процессов с применением нечеткой логики</p>
+            <a href="/orders" class="hero-button">Начать использование</a>
+        </div>
+        <div class="hero-image">
+            <img src="https://sun9-35.userapi.com/s/v1/ig2/DATM7r1nhiyt1wd3rXOYfcm6FRvf_hcmb0UnwxMflmx_2kAsxHw6HNcKhl8SULdY_kHXQk-CI6bxTKfHSVBoKfmY.jpg?quality=96&as=32x21,48x32,72x48,108x72,160x107,240x160,360x240,480x320,540x360,640x427,720x480,1080x720&from=bu&u=Fqsx74Ir7L7P19Le_fUhm1iSa0g2L36f8SVJeECGLDU&cs=807x538" alt="Производство стекла">
+        </div>
+    </div>
+
+    <div class="problem-section">
+        <h2>Проблема современного производства</h2>
+        <div class="problem-content">
+            <p>В условиях стремительного развития технологий и усиления конкуренции автоматизация процессов становится ключевым фактором эффективности. Особенно остро это ощущается на малых и средних предприятиях, где ограниченные ресурсы требуют максимально рационального использования.</p>
+            
+            <div class="problem-cards">
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Ручной раскрой</h3>
+                    <p>Высокая зависимость от человеческого фактора и риск ошибок</p>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3>Финансовые потери</h3>
+                    <p>Нерациональное использование материала увеличивает затраты</p>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Неэффективность</h3>
+                    <p>Ручное планирование становится неоправданно трудоемким</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="solution-section">
+        <h2>Наше решение</h2>
+        <div class="solution-content">
+            <div class="solution-image">
+                <img src="https://www.hibiny.ru/images/news/2024/313494/30c31635aa3204a1ed3e13f302823c66.png" alt="Оптимизация производства">
+            </div>
+            <div class="solution-text">
+                <p>Быстрорез - это специализированное веб-приложение для автоматизации подготовки раскроя листового стекла с использованием методов нечеткой логики. Наша система решает ключевые проблемы производства:</p>
+                
+                <ul class="solution-features">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Интеллектуальный расчет оптимального раскроя</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Учет всех параметров заказа и остатков материала</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Минимизация отходов производства</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Простота внедрения и доступная стоимость</span>
+                    </li>
+                </ul>
+                
+                <p>В отличие от дорогостоящих промышленных САПР, наше решение специально разработано для малых и средних предприятий, обеспечивая оптимальное соотношение функциональности и простоты использования.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="technology-section">
+        <h2>Технологические преимущества</h2>
+        <div class="technology-cards">
+            <div class="technology-card">
+                <div class="tech-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>Нечеткая логика</h3>
+                <p>Алгоритмы учитывают неопределенность и вариативность параметров для оптимального раскроя</p>
+            </div>
+            
+            <div class="technology-card">
+                <div class="tech-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3>Централизованный учет</h3>
+                <p>Единая база данных заказов, деталей и остатков материала</p>
+            </div>
+            
+            <div class="technology-card">
+                <div class="tech-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Аналитика</h3>
+                <p>Мониторинг эффективности использования материалов и производственных мощностей</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Основные стили */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
     
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Имя клиента</th>
-                <th>Адрес</th>
-                <th>Телефон</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for customer in customers %}
-            <tr>
-                <td>{{ customer.customer_id }}</td>
-                <td>{{ customer.customer_name }}</td>
-                <td>{{ customer.address }}</td>
-                <td>{{ customer.phone_number }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+    h1, h2, h3 {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+    
+    /* Герой секция */
+    .hero-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 60px 0;
+        gap: 40px;
+    }
+    
+    .hero-content {
+        flex: 1;
+    }
+    
+    .hero-image {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .hero-image img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+        color: #7f8c8d;
+        margin-bottom: 30px;
+    }
+    
+    .hero-button {
+        display: inline-block;
+        background-color: #3498db;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.3s;
+    }
+    
+    .hero-button:hover {
+        background-color: #2980b9;
+    }
+    
+    /* Секция проблемы */
+    .problem-section {
+        padding: 80px 0;
+        background-color: #f8f9fa;
+        margin: 40px -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .problem-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .problem-content p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+    
+    .problem-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .problem-card {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s;
+    }
+    
+    .problem-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .problem-icon {
+        font-size: 2rem;
+        color: #e74c3c;
+        margin-bottom: 15px;
+    }
+    
+    .problem-card h3 {
+        margin-bottom: 10px;
+    }
+    
+    /* Секция решения */
+    .solution-section {
+        padding: 80px 0;
+    }
+    
+    .solution-content {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+        margin-top: 40px;
+    }
+    
+    .solution-image {
+        flex: 1;
+    }
+    
+    .solution-image img {
+        max-width: 100%;
+        border-radius: 8px;
+    }
+    
+    .solution-text {
+        flex: 1;
+    }
+    
+    .solution-text p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+    
+    .solution-features {
+        list-style: none;
+        padding: 0;
+        margin: 30px 0;
+    }
+    
+    .solution-features li {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: flex-start;
+    }
+    
+    .solution-features i {
+        color: #2ecc71;
+        margin-right: 10px;
+        font-size: 1.2rem;
+    }
+    
+    /* Технологии */
+    .technology-section {
+        padding: 80px 0;
+        background-color: #f8f9fa;
+        margin: 40px -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .technology-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .technology-card {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .tech-icon {
+        font-size: 3rem;
+        color: #3498db;
+        margin-bottom: 20px;
+    }
+    
+    .technology-card h3 {
+        margin-bottom: 15px;
+    }
+    
+    /* CTA секция */
+    .cta-section {
+        text-align: center;
+        padding: 80px 0;
+    }
+    
+    .cta-section h2 {
+        margin-bottom: 20px;
+    }
+    
+    .cta-section p {
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto 30px;
+        color: #7f8c8d;
+    }
+    
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .cta-button {
+        display: inline-block;
+        background-color: #3498db;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.3s;
+    }
+    
+    .cta-button:hover {
+        background-color: #2980b9;
+    }
+    
+    .cta-button-secondary {
+        display: inline-block;
+        background-color: white;
+        color: #3498db;
+        padding: 12px 30px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        border: 1px solid #3498db;
+        transition: all 0.3s;
+    }
+    
+    .cta-button-secondary:hover {
+        background-color: #f8f9fa;
+    }
+    
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .hero-section {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .solution-content {
+            flex-direction: column;
+        }
+        
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+{% endblock %}
